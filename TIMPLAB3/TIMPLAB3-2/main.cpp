@@ -28,16 +28,16 @@ SUITE (KeyTest)
         CHECK_EQUAL(wst(k=4,test),"PRIARARNOMOIGMVE");
     }
     TEST(EmptyKey) {
-        CHECK_THROW(wst(k=0,test), cipher_error);
-    }
-    TEST(NegativeKey) {
-        CHECK_THROW(wst(k=-5,test), cipher_error);
-    }
-    TEST(LargeKey) {
         CHECK_THROW(wst(k=55,test), cipher_error);
     }
+    TEST(NegativeKey) {
+        CHECK_THROW(wst(k=0,test), cipher_error);
+    }
+    TEST(LargeKey) {
+        CHECK_THROW(wst(k=3f,test), cipher_error);
+    }
     TEST(A_characters_in_the_key_instead_of_numbers) {
-        CHECK_THROW(wst(k=-4,test), cipher_error);
+        CHECK_THROW(wst(k=-6,test), cipher_error);
     }
 }
 SUITE(EncryptTest)
