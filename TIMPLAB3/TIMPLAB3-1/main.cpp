@@ -9,24 +9,24 @@ SUITE(KeyTest)
 {
 
     TEST(LargeLetters) {
-        modAlphaCipher test(L"КОТЕЛ");
+        modAlphaCipher test(L"ПРИВЕТ");
         CHECK(true);
     }
     TEST(LargeAndSmallLetters) {
-        modAlphaCipher test(L"КОТопес");
+        modAlphaCipher test(L"НОВЫЙгод");
         CHECK(true);
     }
     TEST(EmptyKey) {
         CHECK_THROW(modAlphaCipher test(L""), cipher_error);
     }
     TEST(Key_with_a_space) {
-        CHECK_THROW(modAlphaCipher test(L"кото пес"), cipher_error);
+        CHECK_THROW(modAlphaCipher test(L"как дела"), cipher_error);
     }
     TEST(Key_with_invalid_characters_number) {
-        CHECK_THROW(modAlphaCipher test(L"кото2пес"), cipher_error);
+        CHECK_THROW(modAlphaCipher test(L"10дней"), cipher_error);
     }
     TEST(Key_with_invalid_characters_special_character) {
-        CHECK_THROW(modAlphaCipher test(L"кото.пес"), cipher_error);
+        CHECK_THROW(modAlphaCipher test(L"Правда?"), cipher_error);
     }
 }
 
@@ -55,15 +55,15 @@ SUITE(EncryptTest)
         CHECK_EQUAL(true, result_correct == pointer->encrypt(open_text));
     }
     TEST_FIXTURE(KeyAB_fixture,NumberInText ) {
-        wstring open_text = L"кора324мох";
+        wstring open_text = L"добрый1234де нь";
         CHECK_THROW(pointer->encrypt(open_text),cipher_error);
     }
     TEST_FIXTURE(KeyAB_fixture,TextWithSpecialSymbol) {
-        wstring open_text = L"кора/мох";
+        wstring open_text = L"при/вет";
         CHECK_THROW(pointer->encrypt(open_text),cipher_error);
     }
     TEST_FIXTURE(KeyAB_fixture,TextWithASpace ) {
-        wstring open_text = L"кора мох";
+        wstring open_text = L"алло алло";
         CHECK_THROW(pointer->encrypt(open_text),cipher_error);
     }
 
@@ -80,26 +80,27 @@ SUITE(DecryptTest)
         wstring result_correct = L"АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
         CHECK_EQUAL(true, result_correct == pointer->decrypt(cipher_text));
     }
+    
+    TEST_FIXTURE(KeyAB_fixture, EmptyText) {
+        wstring cipher_text = L"33попугая";
+        CHECK_THROW(pointer->decrypt(cipher_text),cipher_error);
+    }
     TEST_FIXTURE(KeyAB_fixture,LargeAndSmallLetters ) {
         wstring cipher_text = L"ЗДраВстуЙТЕ";
         wstring result_correct = L"ЗВРЮВПТСЙРЕ";
         CHECK_EQUAL(true, result_correct == pointer->decrypt(cipher_text));
     }
 
-    TEST_FIXTURE(KeyAB_fixture, EmptyText) {
-        wstring cipher_text = L"";
-        CHECK_THROW(pointer->decrypt(cipher_text),cipher_error);
-    }
     TEST_FIXTURE(KeyAB_fixture,TextWithNumber) {
-        wstring cipher_text = L"кора324мох";
+        wstring cipher_text = L"Ну как";
         CHECK_THROW(pointer->decrypt(cipher_text),cipher_error);
     }
     TEST_FIXTURE(KeyAB_fixture,TextWithSymbol) {
-        wstring cipher_text = L"кора/мох";
+        wstring cipher_text = L"при/вет";
         CHECK_THROW(pointer->decrypt(cipher_text),cipher_error);
     }
     TEST_FIXTURE(KeyAB_fixture,TextWithASpace ) {
-        wstring cipher_text = L"Зкора мох";
+        wstring cipher_text = L"привет";
         CHECK_THROW(pointer->decrypt(cipher_text),cipher_error);
     }
 }
